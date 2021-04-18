@@ -282,8 +282,8 @@ sleep 1
 done
 </pre>
 
-### deletando uma instancia (pod) do minikube do namespace dev-to
-<pre>kubectl delete pod -n dev-to myapp-b46d8cbc5-vrwvg
+### Deletando uma instância (pod) do minikube do namespace dev-to
+<pre>kubectl delete pod -n dev-to myapp-b46d8cbc5-vrwvg</pre>
 
 
 ### Adicionando um novo usuário na aplicação
@@ -297,7 +297,7 @@ Preparando a porta do POD da aplicação, para ser utilizada no debug da aplica�
 <pre>kubectl port-forward -n=dev-to myapp-b46d8cbc5-tq95q 5005:5005</pre>
 
 # Logs
-#### Visualizando logs de um POD
+### Visualizando logs de um POD
 <pre>kubectl logs po/webapp-78c4f886f5-wtrl9 </pre>
 
 ##  Stern ferramenta de Logs
