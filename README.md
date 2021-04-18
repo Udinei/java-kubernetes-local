@@ -1,7 +1,5 @@
 # java-kubernetes-local
-Projeto desafio com a construção de um ambiente Kubernetes para rodar aplicações web, para tanto será utilizado o Minikube, ferramenta
-que prove todos os recursos necessários para a criação do ambiente kubernetes local, será criado todos os recursos necessários para fazer
-o deploy no cluster (kubernetes) e configurar uma aplicação Spring boot, para fazer debug com a aplicação rodando no Kubernetes.
+Projeto de construção de um ambiente Kubernetes (usando container Docker) para rodar aplicações web, utilizando o Minikube. O Minikube é um utilitário usado para executar Kubernetes (k8s) na máquina local, ele prove todos os recursos necessários para a criação do ambiente kubernetes. Será feito a geração da imagem da aplicação e seu deploy no cluster (kubernetes) com uso de arquivos descritores, bem como da imagem do banco de dados, e as configurações da aplicação Spring boot no intelliJ, para fazer debug com a aplicação rodando no Kubernetes.
 
 # Stack
 - Java 15
@@ -253,15 +251,17 @@ ex: 127.0.0.1 dev.local , sem a necessidade de informar a
 porta na url, mas na prática não funciona e mesma deve ser informada
 No browser:  <code>http://dev.local:49563/app/hello</code>
 
-Somente linux: Adicionar ip do minikube exibido pelo comando: <code>minikube -p dev.to ip<code> 
+Somente linux: Adicionar ip do minikube exibido pelo comando: 
 
+<code>minikube -p dev.to ip<code>
+ 
 Acessar no browser:<code> http://dev.local:49563/app/hello</code>
 
-## Local de criação das maquinas minikube
+### Local de criação das maquinas minikube
 <pre> drive\Users\user\.minikube\machines\minikube</pre>
 
-## Escalando a aplicação 
-Escalando para para 3 replicas a aplicação rodando no namespace dev-to.
+# Escalando a aplicação no Kubernetes 
+Escalando para 3 replicas a aplicação rodando no namespace dev-to.
 O arquivo: app-hpa - define a quantidade de replicas padrão, que a aplicação de rodar no kubernetes
 
 <pre>kubectl -n dev-to scale deployment/myapp --replicas=3</pre>
@@ -273,8 +273,7 @@ O arquivo: app-hpa - define a quantidade de replicas padrão, que a aplicação 
 <pre>kubectl get pods -n dev-to</pre>
 
 # Visualização da execução do LoadBalancer no terminal
-Com a execução do comando abaixo podem ser vistas a alternância de instancias da aplicação 
-executando no kubernetes. Visualização no terminal
+Execute o comando abaixo non terminal:
 <pre>
 while true
 do curl "http://dev.local:49563/app/hello"
@@ -282,6 +281,11 @@ echo
 sleep 1
 done
 </pre>
+
+E no browser ou curl envie requisições para a aplicação em:
+<pre>http://dev.local:49563/app/hello</pre>
+
+Podem ser vistas a alternância dos ips das instancias da aplicação executando no kubernetes. 
 
 ### Deletando uma instância (pod) do minikube do namespace dev-to
 <pre>kubectl delete pod -n dev-to myapp-b46d8cbc5-vrwvg</pre>
@@ -306,7 +310,7 @@ Preparando a porta do POD da aplicação, para ser utilizada no debug da aplica�
 * [Instalação Stern](https://github.com/wercker/stern/releases)
 * [Asciinema.org](https://asciinema.org/a/263031)
 
-## Centralizando os logs com Stern
+## Centralizando logs com Stern
 Centralizando todos os logs dos PODs, que estão rodando no kubernetes em único log
 <b>Linux:</b>
 <pre>stern -n dev-to myapp </pre>
@@ -329,7 +333,9 @@ Visualizando logs da app em tempo real
 
 # Referências
 * [Projeto Original](https://github.com/sandrogiacom/java-kubernetes)
-* [Site instalação Minikube](https://minikube.sigs.k8s.io/docs/start/)
+* [Kubernetes](https://kubernetes.io/)
+* [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+* [MiniKube tutorial](https://kubernetes.io/pt/docs/tutorials/hello-minikube/)
 * [Instalação Stern](https://github.com/wercker/stern/releases)
 * [Blog GETUP](https://blog.getupcloud.com/minikube-ame-o-ou-deixe-o-dc18fc7cb993)
-* [Minikube](https://ahmet.im/blog/minikube-on-gke/)
+* [Blog Ahmet](https://ahmet.im/blog/minikube-on-gke/)
