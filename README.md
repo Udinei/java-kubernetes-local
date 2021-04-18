@@ -148,7 +148,7 @@ O namespace dev-to fica separado do cluster (kube-system) padrao
 Aplicação e BD rodando no minikube (Kubernetes Local)
 
 
-# Preparando o ambiente Kubernetes Local (Minikube)
+# Ambiente Kubernetes Local (Minikube)
 
 ### Startando o mikube( kubernete local)
 A maquina virtual do kubernets, ira usar duas cpus e 4GB de memoria
@@ -251,7 +251,7 @@ ex: 127.0.0.1 dev.local , sem a necessidade de informar a
 porta na url, mas na prática não funciona e mesma deve ser informada
 No browser:  <code>http://dev.local:49563/app/hello</code>
 
-Somente linux: Adicionar ip do minikube exibido pelo comando: <code>minikube -p dev.to ip<code> IP -> 192.168.49.2
+Somente linux: Adicionar ip do minikube exibido pelo comando: <code>minikube -p dev.to ip<code> 
 
 Acessar no browser:<code> http://dev.local:49563/app/hello</code>
 
