@@ -311,7 +311,7 @@ Centralizando todos os logs dos PODs, que estão rodando no kubernetes em único
 <pre>stern -n dev-to myapp </pre>
 
 <b>Windows:</b>
-<pre>stern_windows_amd64.exe -n dev-to myapp
+<pre>stern_windows_amd64.exe -n dev-to myapp</pre>
 
 # HELP Docker
 Visualizando logs da app em tempo real
