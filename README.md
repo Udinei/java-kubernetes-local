@@ -50,7 +50,7 @@ Nota: Para detalhes como versão e dependências, ver arquivo pom.xml do projeto
         -java
 
 # Arquitetura da aplicação sem Docker
-![](images/so-browser-aplicacao-bd.png)
+![](images/SO-browser-aplicacao-bd.png)
 Aplicação e BD rodando sem container
 
 #  Compilando a aplicação
