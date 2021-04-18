@@ -144,28 +144,18 @@ O namespace dev-to fica separado do cluster (kube-system) padrao
 
 <pre>kubectl create namespace dev-to</pre>
 
-### Visualizando namespaces criados no minikube
-<pre>kubectl get namespaces --show-labels</pre>
-
-### Visualizando o IP da maquina minikube
-<pre>minikube -p dev.to ip</pre>
-
-### Visualizando Dashboard do minikube
-<pre>minikube -p dev.to dashboard</pre>
-
-### Verificando a versãodo do minikube
-<pre>kubectl version</pre>
-
-
 ![](images/minikube-kubernetes.png)
 Aplicação e BD rodando no minikube (Kubernetes Local)
 
 
-# Rodando o Minikube (Kubernetes Local)
+# Preparando o ambiente Kubernetes Local (Minikube)
 
 #### startando o mikube( kubernete local)
 <pre>minikube -p dev.to start --cpus 2 --memory=4096</pre>
 
+### criando o namespace da aplicacao para o profile dev-to no minikube
+ namespace separação do cluster (kube-system) padrao
+ 
 ### Inserindo addons "ingress" no minikube
 O ingress expões os container como serviços rodando na rede (pods na rede externa ao minikube)
 
@@ -176,13 +166,32 @@ exe: my-domain -> ingress -> SVC-1 -> POD-1
 ### inserindo addons metric-server no minikube
 <pre>minikube -p dev.to addons enable metrics-server</pre>
 
-### criando o namespace da aplicacao para o profile dev-to no minikube
- namespace separação do cluster (kube-system) padrao
-
 <pre>kubectl create namespace dev-to</pre>
 
-# HELP Minikube
-### Stop a maquina minikube( kubernete local)
+# Gerando e enviando a imagem da aplicação para o minikube
+(Funciona também com git bash)
+
+<pre>eval $(minikube -p dev.to docker-env) && docker build --force-rm -t java-k8s .</pre>
+
+# Deploy da aplicação e serviços para dentro do kubernetes
+
+Arquivos descritores definem as configurações da aplicação e serviços que rodam no minikube.
+Dentro da pasta k8s/mysql contém o arquivo: mysql-deployment.yaml - Que cria um pod, definindo o container do
+mysql com (nome da imagem,variaveis de ambiente para senhas, portas, etc... ) e o arquivo mysql-service.yaml disponibiliza o POD com um serviço dentro da rede.
+
+Aplicando descritor de deployment dentro do cluster do minikube, dentro da pasta da aplicação, os decritores de deployment define os Pods e Replicas Sets e cria um POD automaticamente.
+
+# Deploy do Banco Mysql para o kubernetes
+
+<pre>kubectl apply -f k8s/mysql/</pre>
+
+### Deploy da aplicacao para o kubernetes 
+
+<pre>kubectl apply -f k8s/app/</pre>
+
+
+# HELP Minikube (kubernete local)
+### Stop a maquina minikube 
 <pre>minikube -p dev.to stop</pre>
 
 ### Delete a maquina minikube
@@ -200,25 +209,8 @@ exe: my-domain -> ingress -> SVC-1 -> POD-1
 ### Verificando a versãodo minikube
 <pre>kubectl version</pre>
 
-# Deploy da aplicação e serviços para dentro do kubernetes
-
-Arquivos descritores definem as configurações da aplicação e serviços no minikube
-na pasta k8s/mysql contem o mysql-deployment.yaml(cria um pod) que define o container do
-mysql(nome da imagem,variaveis de ambiente para senhas, portas, etc... )
-o arquivo mysql-service.yaml disponibiliza o POD com um serviço dentro da rede
-
-
-## Aplicando descritor de deployment dentro do cluster do minikube
-
-Dentro da pasta da aplicação, os decritores de deployment define os Pods e Replicas Sets
-
-# Fazendo o deploy do POD para o mysql
-
-<pre>kubectl apply -f k8s/mysql/</pre>
-
-### Deploy da aplicacao para o kubernetes usando arquivos descritores da pasta k8s/app/
-
-<pre>kubectl apply -f k8s/app/</pre>
+### Verificando a versão do minikube
+<pre>kubectl version</pre>
 
 ### Visualizando os pods (menor unidade dentro do kubernete)
 <pre>kubectl get pods -n dev-to</pre>
@@ -228,11 +220,6 @@ Dentro da pasta da aplicação, os decritores de deployment define os Pods e Rep
 
 ### Acessando o BD no pod com psql
 <pre>psql -U user -d url_shortener_db</pre>
-
-### Gerando e enviando a imagem da aplicação para o minikube
-
-(funcionou no git bash)
-<pre>eval $(minikube -p dev.to docker-env) && docker build --force-rm -t java-k8s .</pre>
 
 ### Copiando imagem para o cache do mikikute
 <pre>minikube cache add java-k8s:latest</pre>
@@ -252,7 +239,6 @@ no minikube via browser, o terminal onde foi executado o comando windows fica tr
 o tunel
 
 <pre>minikube -p dev.to service -n dev-to myapp --url</pre>
-
 
 ## Acessando a aplicação via namehosts
 Localização do arquivo hosts:
