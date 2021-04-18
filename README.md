@@ -1,9 +1,7 @@
 # java-kubernetes-local
-Projeto desafio de construir um ambiente Kubernetes local 
-para aprender a tecnologia sem medo de errar. Com a 
-criação dos recursos necessários para fazer o deploy 
-no cluster (kubernetes) e configurar uma aplicação spring boot
-para fazer debug com a aplicação rodando no Kubernetes (minikube).
+Projeto desafio com a construção de um ambiente Kubernetes para rodar aplicações web, para tanto será utilizado o Minikube, ferramenta
+que prove todos os recursos necessários para a criação do ambiente kubernetes local, será criado todos os recursos necessários para fazer
+o deploy no cluster (kubernetes) e configurar uma aplicação Spring boot, para fazer debug com a aplicação rodando no Kubernetes.
 
 # Stack
 - Java 15
@@ -83,7 +81,7 @@ seu conteúdo diz:
 
 - Use a pasta criada acima, como diretorio de trabalho
 
-- Libere a porta 8080
+- Libere a porta 8080 para a acesso a aplicação
 
 - Execute a aplicação
 
@@ -105,7 +103,7 @@ ENTRYPOINT [ "sh", "-c", "java --enable-preview $JAVA_OPTS -jar app.jar" ]
 ### Criando imagem Docker da aplicação
 
 Na pasta da aplicação após criar o Dockerfile executar o comando abaixo,
-Que força a criação da imagem, se a imagem existir, remova e
+Que força a criação da imagem, se a imagem existir remova, e
 crie a imagem com o nome java-k8s, com todo conteúdo da pasta atual. 
 
 <pre>docker build --force-rm -t java-k8s .</pre>
@@ -120,18 +118,13 @@ crie a imagem com o nome java-k8s, com todo conteúdo da pasta atual.
 
 # Aplicação e BD Dockerizados
 ![](images/app-bd-dockerizados.png)
-Aplicação e BD rodando em container Dockers
+
+Aplicação e BD rodando em containers Docker sem o kubernetes
 
 # Rodando o Minikube (Kubernetes Local)
 
 #### startando o mikube( kubernete local)
 <pre>minikube -p dev.to start --cpus 2 --memory=4096</pre>
-
-### stop a maquina minikube( kubernete local)
-<pre>minikube -p dev.to stop</pre>
-
-### delete a maquina minikube
-<pre>minikube -p dev.to stop && minikube -p dev.to delete</pre>
 
 ### Inserindo addons "ingress" no minikube
 
@@ -173,14 +166,10 @@ Aplicação e BD rodando no minikube (Kubernetes Local)
 #### startando o mikube( kubernete local)
 <pre>minikube -p dev.to start --cpus 2 --memory=4096</pre>
 
-### stop a maquina minikube( kubernete local)
-<pre>minikube -p dev.to stop</pre>
+### Inserindo addons "ingress" no minikube
+O ingress expões os container como serviços rodando na rede (pods na rede externa ao minikube)
 
-### delete a maquina minikube
-<pre>minikube -p dev.to stop && minikube -p dev.to delete</pre>
-
-Inserindo addons "ingress" no minikube, para expor os serviços rodando
-nos pods na rede externa ao minikube exe: my-domain  ingress -> SVC-1 -> POD-1
+exe: my-domain -> ingress -> SVC-1 -> POD-1
 
 <pre>minikube -p dev.to addons enable ingress</pre>
 
@@ -192,11 +181,17 @@ nos pods na rede externa ao minikube exe: my-domain  ingress -> SVC-1 -> POD-1
 
 <pre>kubectl create namespace dev-to</pre>
 
+# HELP Minikube
+### Stop a maquina minikube( kubernete local)
+<pre>minikube -p dev.to stop</pre>
+
+### Delete a maquina minikube
+<pre>minikube -p dev.to stop && minikube -p dev.to delete</pre>
+
 ### Visualizando namespaces criados no minikube
 <pre>kubectl get namespaces --show-labels</pre>
 
 ### Visualizando o IP da maquina minikube
-
 <pre>minikube -p dev.to ip</pre>
 
 ### Visualizando minikube via dashboard
