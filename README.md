@@ -150,11 +150,17 @@ Aplicação e BD rodando no minikube (Kubernetes Local)
 
 # Preparando o ambiente Kubernetes Local (Minikube)
 
-#### startando o mikube( kubernete local)
+### Startando o mikube( kubernete local)
+A maquina virtual do kubernets, ira usar duas cpus e 4GB de memoria
+
 <pre>minikube -p dev.to start --cpus 2 --memory=4096</pre>
 
-### criando o namespace da aplicacao para o profile dev-to no minikube
+### Criando o namespace dev-to no minikube para aplicacao
  namespace separação do cluster (kube-system) padrao
+ <pre>kubectl create namespace dev-to</pre>
+ 
+### Visualizando namespaces criados no minikube
+<pre>kubectl get namespaces --show-labels</pre>
  
 ### Inserindo addons "ingress" no minikube
 O ingress expões os container como serviços rodando na rede (pods na rede externa ao minikube)
@@ -163,23 +169,19 @@ exe: my-domain -> ingress -> SVC-1 -> POD-1
 
 <pre>minikube -p dev.to addons enable ingress</pre>
 
-### inserindo addons metric-server no minikube
+### inserindo addons "metric-server" no minikube
 <pre>minikube -p dev.to addons enable metrics-server</pre>
 
-<pre>kubectl create namespace dev-to</pre>
-
 # Gerando e enviando a imagem da aplicação para o minikube
-(Funciona também com git bash)
+- Funciona também usando git bash (windows)
 
 <pre>eval $(minikube -p dev.to docker-env) && docker build --force-rm -t java-k8s .</pre>
 
 # Deploy da aplicação e serviços para dentro do kubernetes
 
-Arquivos descritores definem as configurações da aplicação e serviços que rodam no minikube.
-Dentro da pasta k8s/mysql contém o arquivo: mysql-deployment.yaml - Que cria um pod, definindo o container do
-mysql com (nome da imagem,variaveis de ambiente para senhas, portas, etc... ) e o arquivo mysql-service.yaml disponibiliza o POD com um serviço dentro da rede.
+Arquivos descritores definem as configurações da aplicação como Pods e Replicas Sets, a serem criados automaticamente dentro do kubernetes. 
 
-Aplicando descritor de deployment dentro do cluster do minikube, dentro da pasta da aplicação, os decritores de deployment define os Pods e Replicas Sets e cria um POD automaticamente.
+Na pasta k8s/mysql contém o arquivo: mysql-deployment.yaml - que cria um pod, definindo o container do mysql com: nome da imagem,variaveis de ambiente para senhas, portas, etc.. e o arquivo: mysql-service.yaml que define o POD que ira atuar como um serviço disponivel dentro da rede local.
 
 # Deploy do Banco Mysql para o kubernetes
 
@@ -189,6 +191,17 @@ Aplicando descritor de deployment dentro do cluster do minikube, dentro da pasta
 
 <pre>kubectl apply -f k8s/app/</pre>
 
+### Visualizando os PODs criados no namespace dev-to no Kubernetes, pelos deploys acima
+<pre>kubectl get pods -n dev-to</pre>
+
+### Visualizando informações do kubernetes via Dashboard
+<pre>minikube -p dev.to dashboard</pre>
+
+### Acessando o container minikube via ssh
+<pre>minikube -p dev.to ssh</pre>
+
+### Visualizando serviços sendo executados no minikube
+<pre>kubectl get services -n dev-to</pre>
 
 # HELP Minikube (kubernete local)
 ### Stop a maquina minikube 
@@ -197,14 +210,8 @@ Aplicando descritor de deployment dentro do cluster do minikube, dentro da pasta
 ### Delete a maquina minikube
 <pre>minikube -p dev.to stop && minikube -p dev.to delete</pre>
 
-### Visualizando namespaces criados no minikube
-<pre>kubectl get namespaces --show-labels</pre>
-
 ### Visualizando o IP da maquina minikube
 <pre>minikube -p dev.to ip</pre>
-
-### Visualizando minikube via dashboard
-<pre>minikube -p dev.to dashboard</pre>
 
 ### Verificando a versãodo minikube
 <pre>kubectl version</pre>
@@ -212,14 +219,11 @@ Aplicando descritor de deployment dentro do cluster do minikube, dentro da pasta
 ### Verificando a versão do minikube
 <pre>kubectl version</pre>
 
-### Visualizando os pods (menor unidade dentro do kubernete)
-<pre>kubectl get pods -n dev-to</pre>
-
-### Acessando o pod no minikube que esta rodando o BD
-<pre>kubectl exec -it postgres-74bdd6978d-k8f9p bash</pre>
+### Acessando o POD no minikube que esta rodando o BD
+<pre>kubectl exec -it mysql-74bdd6978d-k8f9p bash</pre>
 
 ### Acessando o BD no pod com psql
-<pre>psql -U user -d url_shortener_db</pre>
+<pre>psql -U user -d mysql-db</pre>
 
 ### Copiando imagem para o cache do mikikute
 <pre>minikube cache add java-k8s:latest</pre>
@@ -227,27 +231,19 @@ Aplicando descritor de deployment dentro do cluster do minikube, dentro da pasta
 ### Visualizando o cache do minikube
 <pre>minikube cache list</pre>
 
-### Acessando o container minikube via ssh
-<pre>minikube -p dev.to ssh</pre>
-
-### Visualizando serviços sendo executados no minikube
-<pre>kubectl get services -n dev-to</pre>
-
-### Solicitando url da aplicação "myapp" ao minikube
-O comando abaixo, criará um tunel e sera gerado uma url para acessar a aplicação que esta rodando
-no minikube via browser, o terminal onde foi executado o comando windows fica travado executando
-o tunel
+### Acessando a aplicação no Browser
+O comando abaixo, criará um tunel, (uma url) para acessar a aplicação que esta rodando no minikube via browser. Se o terminal onde foi executado o comando for windows, a janela fica-ra travada executando o tunel.
 
 <pre>minikube -p dev.to service -n dev-to myapp --url</pre>
 
-## Acessando a aplicação via namehosts
+# Acessando a aplicação via hosts names
 Localização do arquivo hosts:
-
-Windows: 
-<code>C:\Windows\System32\drivers\etc\hosts</code>
 
 Linux:
 <code> /etc/hosts</code>
+
+Windows: 
+<code>C:\Windows\System32\drivers\etc\hosts</code>
 
 Adicionar no file hosts o ip: 127.0.0.1 dev.local 
 Nota: No windows, teoricamente deveria ser acessado assim:
@@ -255,24 +251,28 @@ ex: 127.0.0.1 dev.local , sem a necessidade de informar a
 porta na url, mas na prática não funciona e mesma deve ser informada
 No browser:  <code>http://dev.local:49563/app/hello</code>
 
-Somente linux: Adicionar ip do minikube exibido pelo comando: minikube -p dev.to ip
-IP -> 192.168.49.2
+Somente linux: Adicionar ip do minikube exibido pelo comando: <code>minikube -p dev.to ip<code> IP -> 192.168.49.2
 
 Acessar no browser:<code> http://dev.local:49563/app/hello</code>
 
+## Local de criação das maquinas minikube
+<pre><drive>\Users\<user>\.minikube\machines\minikube
 
-## Escalando a aplicação myapp,
-no namespace dev-to, para 3 replicas  o arquivo: app-hpa - define a quantidade replicas de uma aplicação rodando no kubernetes
-<pre>kubectl -n dev-to scale deployment/myapp --replicas=3
+## Escalando a aplicação 
+Escalando para para 3 replicas a aplicação rodando no namespace dev-to.
+O arquivo: app-hpa - define a quantidade de replicas padrão, que a aplicação de rodar no kubernetes
 
-<pre>kubectl -n dev-to scale deployment/myapp --replicas=0 - Interrompe a execuções dos PODs de myapp
+<pre>kubectl -n dev-to scale deployment/myapp --replicas=3</pre>
+
+### Silenciando (pausando) a execuções dos PODs de myapp
+<pre>kubectl -n dev-to scale deployment/myapp --replicas=0</pre>
 
 ## visualizando as replicas escaladas(pods) no namespace dev-to
-<pre>kubectl get pods -n dev-to
+<pre>kubectl get pods -n dev-to</pre>
 
-## Visualizando no terminal a alternância entre as aplicações escaladas no minikube
-## A cada instante o kubernetes, troca a instancia que tratara as requisição
-## enviadas pelo browser, curl ou outro sistema
+# Visualização da execução do LoadBalancer no terminal
+Com a execução do comando abaixo podem ser vistas a alternância de instancias da aplicação 
+executando no kubernetes. Visualização no terminal
 <pre>
 while true
 do curl "http://dev.local:49563/app/hello"
@@ -280,37 +280,37 @@ echo
 sleep 1
 done
 <pre>
-# deletando uma instancia (pod) do minikube do namespace dev-to
+
+### deletando uma instancia (pod) do minikube do namespace dev-to
 <pre>kubectl delete pod -n dev-to myapp-b46d8cbc5-vrwvg
 
 
-## Adicionando um novo usuario com uso da aplicação e banco rodando no minikube
-<pre>curl --location --request POST 'http://dev.local:63197/app/users' --header 'Content-Type: application/json' --data-raw '{"name":"new user","birthDate": "2010-10-01"}'
+### Adicionando um novo usuário na aplicação
+Aplicação e banco rodando no minikube
 
-# Preparando a porta do pod para ser utilizada no debug da aplicação que esta rodando no minikube
-<pre>kubectl port-forward -n=dev-to <pod_name> 5005:5005
-<pre>kubectl port-forward -n=dev-to myapp-b46d8cbc5-tq95q 5005:5005
+<pre>curl --location --request POST 'http://dev.local:63197/app/users' --header 'Content-Type: application/json' --data-raw '{"name":"new user","birthDate": "2010-10-01"}'</pre>
 
-# visualizando logs do pod
-<pre>kubectl logs po/webapp-78c4f886f5-wtrl9
+# Debug da aplicação rodando no kubernetes
+Preparando a porta do POD da aplicação, para ser utilizada no debug da aplicação que esta rodando no minikube 
 
-## Centralizando todos os logs dos PODs que estão rodando no kubernetes
-## download do stern https://github.com/wercker/stern
-<pre>stern -n dev-to myapp
+<pre>kubectl port-forward -n=dev-to myapp-b46d8cbc5-tq95q 5005:5005</pre>
 
-##  Stern para windows
-https://github.com/wercker/stern/releases
-*[Asciinema.org](https://asciinema.org/a/263031)
+# Logs
+#### Visualizando logs de um POD
+<pre>kubectl logs po/webapp-78c4f886f5-wtrl9 </pre>
 
-## executando o stern e visualizando logs dos pods
+##  Stern ferramenta de Logs
+* [Download do stern](https://github.com/wercker/stern)
+* [Instalação Stern](https://github.com/wercker/stern/releases)
+* [Asciinema.org](https://asciinema.org/a/263031)
+
+## Centralizando os logs com Stern
+Centralizando todos os logs dos PODs, que estão rodando no kubernetes em único log
+<b>Linux:</b>
+<pre>stern -n dev-to myapp </pre>
+
+<b>Windows:</b>
 <pre>stern_windows_amd64.exe -n dev-to myapp
-
-
-## Local de criação das maquinas minikube
-<pre><drive>\Users\<user>\.minikube\machines\minikube
-
-## Referencias minikube
-<pre>https://ahmet.im/blog/minikube-on-gke/
 
 # HELP Docker
 Visualizando logs da app em tempo real
@@ -326,4 +326,8 @@ Visualizando logs da app em tempo real
 <pre>docker rmi idimagemdocker </pre>
 
 # Referências
+* [Projeto Original](https://github.com/sandrogiacom/java-kubernetes)
 * [Site instalação Minikube](https://minikube.sigs.k8s.io/docs/start/)
+* [Instalação Stern](https://github.com/wercker/stern/releases)
+* [Blog GETUP](https://blog.getupcloud.com/minikube-ame-o-ou-deixe-o-dc18fc7cb993)
+* [Minikube](https://ahmet.im/blog/minikube-on-gke/)
