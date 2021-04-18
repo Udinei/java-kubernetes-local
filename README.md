@@ -169,7 +169,7 @@ exe: my-domain -> ingress -> SVC-1 -> POD-1
 
 <pre>minikube -p dev.to addons enable ingress</pre>
 
-### inserindo addons "metric-server" no minikube
+### Inserindo addons "metric-server" no minikube
 <pre>minikube -p dev.to addons enable metrics-server</pre>
 
 # Gerando e enviando a imagem da aplicação para o minikube
@@ -191,7 +191,8 @@ Na pasta k8s/mysql contém o arquivo: mysql-deployment.yaml - que cria um pod, d
 
 <pre>kubectl apply -f k8s/app/</pre>
 
-### Visualizando os PODs criados no namespace dev-to no Kubernetes, pelos deploys acima
+### Visualizando PODs
+Os pods criados no namespace dev-to no Kubernetes, pelos deploys acima
 <pre>kubectl get pods -n dev-to</pre>
 
 ### Visualizando informações do kubernetes via Dashboard
