@@ -268,7 +268,7 @@ O arquivo: app-hpa - define a quantidade de replicas padrão, que a aplicação 
 ### Silenciando (pausando) a execuções dos PODs de myapp
 <pre>kubectl -n dev-to scale deployment/myapp --replicas=0</pre>
 
-## visualizando as replicas escaladas(pods) no namespace dev-to
+## Visualizando as replicas escaladas(pods) no namespace dev-to
 <pre>kubectl get pods -n dev-to</pre>
 
 # Visualização da execução do LoadBalancer no terminal
@@ -280,7 +280,7 @@ do curl "http://dev.local:49563/app/hello"
 echo
 sleep 1
 done
-<pre>
+</pre>
 
 ### deletando uma instancia (pod) do minikube do namespace dev-to
 <pre>kubectl delete pod -n dev-to myapp-b46d8cbc5-vrwvg
