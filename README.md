@@ -256,7 +256,7 @@ Somente linux: Adicionar ip do minikube exibido pelo comando: <code>minikube -p 
 Acessar no browser:<code> http://dev.local:49563/app/hello</code>
 
 ## Local de criação das maquinas minikube
-<pre><drive>\Users\<user>\.minikube\machines\minikube
+<pre> drive\Users\user\.minikube\machines\minikube</pre>
 
 ## Escalando a aplicação 
 Escalando para para 3 replicas a aplicação rodando no namespace dev-to.
