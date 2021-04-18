@@ -135,7 +135,7 @@ exe: my-domain -> ingress -> SVC-1 -> POD-1
 
 <pre>minikube -p dev.to addons enable ingress</pre>
 
-### inserindo addons metric-server no minikube
+### inserindo addons "metric-server" no minikube
 <pre>minikube -p dev.to addons enable metrics-server</pre>
 
 ### Criando o namespace da aplicacao dev-to no minikube
@@ -145,25 +145,26 @@ O namespace dev-to fica separado do cluster (kube-system) padrao
 <pre>kubectl create namespace dev-to</pre>
 
 ![](images/minikube-kubernetes.png)
-Aplicação e BD rodando no minikube (Kubernetes Local)
+
+Aplicação e BD rodando no Kubernetes Local (minikube)
 
 
 # Ambiente Kubernetes Local (Minikube)
 
 ### Startando o mikube( kubernete local)
-A maquina virtual do kubernets, ira usar duas cpus e 4GB de memoria
+A maquina virtual do kubernets, irá usar duas cpus e 4GB de memória
 
 <pre>minikube -p dev.to start --cpus 2 --memory=4096</pre>
 
 ### Criando o namespace dev-to no minikube para aplicacao
- namespace separação do cluster (kube-system) padrao
+ O namespace dev-to esta separadoo do cluster (kube-system) padrão
  <pre>kubectl create namespace dev-to</pre>
  
 ### Visualizando namespaces criados no minikube
 <pre>kubectl get namespaces --show-labels</pre>
  
 ### Inserindo addons "ingress" no minikube
-O ingress expões os container como serviços rodando na rede (pods na rede externa ao minikube)
+O ingress expõem os container como serviços rodando na rede (pods na rede externa ao minikube)
 
 exe: my-domain -> ingress -> SVC-1 -> POD-1
 
@@ -173,26 +174,29 @@ exe: my-domain -> ingress -> SVC-1 -> POD-1
 <pre>minikube -p dev.to addons enable metrics-server</pre>
 
 # Gerando e enviando a imagem da aplicação para o minikube
-- Funciona também usando git bash (windows)
+- O comando abaixo também funciona usando git bash (windows)
 
 <pre>eval $(minikube -p dev.to docker-env) && docker build --force-rm -t java-k8s .</pre>
 
-# Deploy da aplicação e serviços para dentro do kubernetes
+# Deploy no Kubernets
+As aplicações e serviços criados devem ser enviadas para dentro do kubernetes (deploy), isso é feito com uso de
+arquivos descritores, que definem as configurações da aplicação como Pods e Replicas Sets, a serem criados automaticamente dentro do kubernetes. 
 
-Arquivos descritores definem as configurações da aplicação como Pods e Replicas Sets, a serem criados automaticamente dentro do kubernetes. 
-
-Na pasta k8s/mysql contém o arquivo: mysql-deployment.yaml - que cria um pod, definindo o container do mysql com: nome da imagem,variaveis de ambiente para senhas, portas, etc.. e o arquivo: mysql-service.yaml que define o POD que ira atuar como um serviço disponivel dentro da rede local.
+Na pasta "k8s/mysql" da aplicação contém o arquivo: mysql-deployment.yaml - que cria um pod, definindo o container do mysql com: nome da imagem,variaveis de ambiente para senhas, portas, etc.. e o arquivo: mysql-service.yaml que define o POD que ira atuar como um serviço disponivel dentro da rede local.
 
 # Deploy do Banco Mysql para o kubernetes
 
 <pre>kubectl apply -f k8s/mysql/</pre>
 
-### Deploy da aplicacao para o kubernetes 
+### Deploy da aplicação para o kubernetes 
 
 <pre>kubectl apply -f k8s/app/</pre>
 
 ### Visualizando PODs
-Os pods criados no namespace dev-to no Kubernetes, pelos deploys acima
+Um pod é um grupo de um ou mais contêineres, com armazenamento compartilhado e recursos de rede, é 
+uma especificação de como executar os contêineres. 
+Visualizando os pods criados no namespace dev-to no Kubernetes, pelos deploys acima
+
 <pre>kubectl get pods -n dev-to</pre>
 
 ### Visualizando informações do kubernetes via Dashboard
@@ -205,28 +209,25 @@ Os pods criados no namespace dev-to no Kubernetes, pelos deploys acima
 <pre>kubectl get services -n dev-to</pre>
 
 # HELP Minikube (kubernete local)
-### Stop a maquina minikube 
+### Parando a máquina minikube 
 <pre>minikube -p dev.to stop</pre>
 
-### Delete a maquina minikube
+### Delete a máquina minikube
 <pre>minikube -p dev.to stop && minikube -p dev.to delete</pre>
 
-### Visualizando o IP da maquina minikube
+### Visualizando o IP da máquina minikube
 <pre>minikube -p dev.to ip</pre>
-
-### Verificando a versãodo minikube
-<pre>kubectl version</pre>
 
 ### Verificando a versão do minikube
 <pre>kubectl version</pre>
 
-### Acessando o POD no minikube que esta rodando o BD
+### Acessando POD no minikube que está rodando o BD
 <pre>kubectl exec -it mysql-74bdd6978d-k8f9p bash</pre>
 
 ### Acessando o BD no pod com psql
 <pre>psql -U user -d mysql-db</pre>
 
-### Copiando imagem para o cache do mikikute
+### Copiando imagem para o cache do minikube
 <pre>minikube cache add java-k8s:latest</pre>
 
 ### Visualizando o cache do minikube
