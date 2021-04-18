@@ -51,6 +51,7 @@ Nota: Para detalhes como versão e dependências, ver arquivo pom.xml do projeto
 
 # Arquitetura da aplicação sem Docker
 ![](images/SO-browser-aplicacao-bd.png)
+
 Aplicação e BD rodando sem container
 
 #  Compilando a aplicação
