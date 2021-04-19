@@ -252,7 +252,7 @@ No browser:  <pre>http://dev.local:49563/app/hello</pre>
 
 Somente linux: Adicionar ip do minikube exibido pelo comando: 
 
-<pre>minikube -p dev.to ip<pre>
+<pre>minikube -p dev.to ip</pre>
  
 Acessar no browser:<pre> http://dev.local:49563/app/hello</pre>
 
