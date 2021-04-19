@@ -142,12 +142,11 @@ O namespace dev-to fica separado do cluster (kube-system) padrao
 
 <pre>kubectl create namespace dev-to</pre>
 
+# Ambiente Kubernetes Local (Minikube)
+
 ![](images/minikube-kubernetes.png)
 
 Aplicação e BD rodando no Kubernetes Local (minikube)
-
-
-# Ambiente Kubernetes Local (Minikube)
 
 ### Startando o mikube( kubernete local)
 A maquina virtual do kubernets, irá usar duas cpus e 4GB de memória
