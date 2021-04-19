@@ -346,3 +346,4 @@ Visualizando logs da app em tempo real
 * [Instalação Stern](https://github.com/wercker/stern/releases)
 * [Blog GETUP](https://blog.getupcloud.com/minikube-ame-o-ou-deixe-o-dc18fc7cb993)
 * [Blog Ahmet](https://ahmet.im/blog/minikube-on-gke/)
+* [OVHcloud blog](https://www.ovh.com/blog/getting-external-traffic-into-kubernetes-clusterip-nodeport-loadbalancer-and-ingress/)
