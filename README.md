@@ -339,7 +339,7 @@ Visualizando logs da app em tempo real
 - Monitorar / Logs
 
 # Referências
-* [Projeto Original](https://github.com/sandrogiacom/java-kubernetes)
+* [Projeto Original Sandro Giacomozzi](https://github.com/sandrogiacom/java-kubernetes)
 * [Kubernetes](https://kubernetes.io/)
 * [Minikube](https://minikube.sigs.k8s.io/docs/start/)
 * [MiniKube tutorial](https://kubernetes.io/pt/docs/tutorials/hello-minikube/)
