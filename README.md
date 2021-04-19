@@ -239,7 +239,7 @@ O comando abaixo, criará um tunel, (uma url) para acessar a aplicação que est
 Localização do arquivo hosts:
 
 Linux:
-<code> /etc/hosts</code>
+<pre> /etc/hosts</pre>
 
 Windows: 
 <code>C:\Windows\System32\drivers\etc\hosts</code>
@@ -248,13 +248,13 @@ Adicionar no file hosts o ip: 127.0.0.1 dev.local
 Nota: No windows, teoricamente deveria ser acessado assim:
 ex: 127.0.0.1 dev.local , sem a necessidade de informar a 
 porta na url, mas na prática não funciona e mesma deve ser informada
-No browser:  <code>http://dev.local:49563/app/hello</code>
+No browser:  <pre>http://dev.local:49563/app/hello</pre>
 
 Somente linux: Adicionar ip do minikube exibido pelo comando: 
 
-<code>minikube -p dev.to ip<code>
+<pre>minikube -p dev.to ip<pre>
  
-Acessar no browser:<code> http://dev.local:49563/app/hello</code>
+Acessar no browser:<pre> http://dev.local:49563/app/hello</pre>
 
 ### Local de criação das maquinas minikube
 <pre> drive\Users\user\.minikube\machines\minikube</pre>
@@ -268,10 +268,10 @@ O arquivo: app-hpa - define a quantidade de replicas padrão, que a aplicação 
 ### Silenciando (pausando) a execuções dos PODs de myapp
 <pre>kubectl -n dev-to scale deployment/myapp --replicas=0</pre>
 
-## Visualizando as replicas escaladas(pods) no namespace dev-to
+### Visualizando as replicas escaladas(pods) no namespace dev-to
 <pre>kubectl get pods -n dev-to</pre>
 
-# Visualização da execução do LoadBalancer no terminal
+### Visualização da execução do LoadBalancer no terminal
 Execute o comando abaixo non terminal:
 <pre>
 while true
@@ -309,7 +309,7 @@ Preparando a porta do POD da aplicação, para ser utilizada no debug da aplica�
 * [Instalação Stern](https://github.com/wercker/stern/releases)
 * [Asciinema.org](https://asciinema.org/a/263031)
 
-## Centralizando logs com Stern
+### Centralizando logs com Stern
 Centralizando todos os logs dos PODs, que estão rodando no kubernetes em único log
 <b>Linux:</b>
 <pre>stern -n dev-to myapp </pre>
@@ -322,13 +322,21 @@ Visualizando logs da app em tempo real
 
 <pre>docker logs -f myapp</pre>
 
-# Stop containers docker
+### Stop containers docker
 
 <pre>docker stop mysql57 myapp</pre>
 
-# Removendo imagem do docker
+### Removendo imagem do docker
 
 <pre>docker rmi idimagemdocker </pre>
+
+# Boas práticas
+- Use imagens JRE e não JDK
+- Automatizar o máximo possivel
+- Usar variáveis de ambiente
+- Health Check
+- Informação da aplicação
+- Monitorar / Logs
 
 # Referências
 * [Projeto Original](https://github.com/sandrogiacom/java-kubernetes)
